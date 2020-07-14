@@ -8,11 +8,11 @@ class Compilacion implements CompilacionConstants {
 
        public static void main(String[] args) throws ParseException, Exception {
         try {
-            Compilacion analizador = new Compilacion(new FileInputStream("C:\\Users\\Lowell\\Documents\\NetBeansProjects\\Automatas-II\\src\\automatas/Sintaxis.txt"));
+            Compilacion analizador = new Compilacion(new FileInputStream("src/automatas/Sintaxis.txt"));
             analizador.Programa();
             System.out.println();
             System.out.println();
-            AnalisisSemantica.TablaSimbolos();
+            AnalisisSemantico.TablaSimbolos();
 
             System.out.println();
             System.out.println("\u005ctAnalizador ha terminado.");
@@ -100,7 +100,7 @@ class Compilacion implements CompilacionConstants {
 
     static final public void Principal() throws ParseException {
 
-        AnalisisSemantica.SetTables();
+        AnalisisSemantico.SetTables();
         jj_consume_token(MAIN);
         jj_consume_token(LBRACE);
         Sentencias();
@@ -113,7 +113,7 @@ class Compilacion implements CompilacionConstants {
         TiposDatos();
         td = token.kind;
         var = jj_consume_token(IDENTIFIER);
-        AnalisisSemantica.InsertarSimbolo(var, td);
+        AnalisisSemantico.InsertarSimbolo(var, td);
 
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ASIGNACION:
@@ -135,7 +135,7 @@ class Compilacion implements CompilacionConstants {
             }
             jj_consume_token(COMMA);
             var = jj_consume_token(IDENTIFIER);
-            AnalisisSemantica.InsertarSimbolo(var, td);
+            AnalisisSemantico.InsertarSimbolo(var, td);
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case ASIGNACION:
                     VariablesAsignacion(var, td);
@@ -157,7 +157,7 @@ class Compilacion implements CompilacionConstants {
         jj_consume_token(ASIGNACION);
         TiposAsignaciones();
         v2 = token;
-        res = AnalisisSemantica.checkAsing(v1, v2, Tipo);
+        res = AnalisisSemantico.checkAsing(v1, v2, Tipo);
 
         //lineA COMENTARIO
         if (res != " ") {
@@ -186,7 +186,7 @@ class Compilacion implements CompilacionConstants {
             OpAritmetico();
             TiposAsignaciones();
             v3 = token;
-            res = AnalisisSemantica.checkAsing(v1, v3, tipo);
+            res = AnalisisSemantico.checkAsing(v1, v3, tipo);
 
             if (res != " " && !imp) {
                 System.out.println(res);
@@ -246,7 +246,7 @@ class Compilacion implements CompilacionConstants {
                     if (jj_2_3(2)) {
                         SentenciaAsignacion();
                         jj_consume_token(SEMICOLON);
-                        AnalisisSemantica.segunda = 0;
+                        AnalisisSemantico.segunda = 0;
                     } else {
                         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                             case WRITE:
@@ -576,7 +576,7 @@ class Compilacion implements CompilacionConstants {
         TiposDatos();
         td = token.kind;
         var = jj_consume_token(IDENTIFIER);
-        AnalisisSemantica.InsertarSimbolo(var, td);
+        AnalisisSemantico.InsertarSimbolo(var, td);
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ASIGNACION:
                 VariablesAsignacion(var, td);
@@ -635,7 +635,7 @@ class Compilacion implements CompilacionConstants {
                 jj_consume_token(ASIGNACION);
                 TiposAsignaciones();
                 v2 = token;
-                res = AnalisisSemantica.checkAsing(v1, v2, tipo);
+                res = AnalisisSemantico.checkAsing(v1, v2, tipo);
 
                 if (res != " ") {
                     System.out.println(res);
@@ -651,7 +651,7 @@ class Compilacion implements CompilacionConstants {
                     OpAritmetico();
                     TiposAsignaciones();
                     v3 = token;
-                    res = AnalisisSemantica.checkAsing(v1, v3, tipo);
+                    res = AnalisisSemantico.checkAsing(v1, v3, tipo);
 
                     if (res != " " && !imp) {
                         System.out.println(res);
@@ -672,7 +672,7 @@ class Compilacion implements CompilacionConstants {
                         jj_consume_token(-1);
                         throw new ParseException();
                 }
-                res = AnalisisSemantica.checkVariable(v1);
+                res = AnalisisSemantico.checkVariable(v1);
 
                 if (res != " ") {
                     System.out.println(res);

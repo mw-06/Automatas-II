@@ -4,7 +4,7 @@ import java.util.Hashtable;
 import java.lang.String;
 import java.util.ArrayList;
 
-class AnalisisSemantica
+class AnalisisSemantico
 {
 		public static int segunda = 0;
 		private static Hashtable tabla = new Hashtable();
