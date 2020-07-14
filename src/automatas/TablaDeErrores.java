@@ -5,10 +5,6 @@
  */
 package automatas;
 
-/**
- *
- * @author Lqr
- */
 public class TablaDeErrores {
 
     public String getTipoError() {
@@ -42,17 +38,26 @@ public class TablaDeErrores {
     public void setComentario(String Comentario) {
         this.Comentario = Comentario;
     }
-    
+    int numero;
     String tipoError;
     String variable;
     int Linea;
     String Comentario;
     
-    public TablaDeErrores( String tipoError, String variable, int Linea,String Comentario){
+    public TablaDeErrores(int numero, String tipoError, String variable, int Linea,String Comentario){
+        this.numero = numero;
         this.tipoError=tipoError;
         this.variable = variable;
         this.Linea = Linea;
         this.Comentario = Comentario;   
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
     
     

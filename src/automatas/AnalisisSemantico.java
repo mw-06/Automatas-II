@@ -28,9 +28,9 @@ class AnalisisSemantico {
     }
 
     public static void TablaDeErrores() {
-        System.out.println("Tipo de error \t Variable \t Linea \t  Comenario");
+        System.out.println("N \t Tipo de error \t Variable \t Linea del error \t  Comenario");
         for (int i = 0; i < indiceTablaErrores; i++) {
-            System.out.println(tablaDeErrores[i].getTipoError() + " \t " + tablaDeErrores[i].getVariable() + "\t\t " + tablaDeErrores[i].getLinea() + "\t" + tablaDeErrores[i].getComentario());
+            System.out.println(tablaDeErrores[i].numero+"\t"+tablaDeErrores[i].getTipoError() + " \t " + tablaDeErrores[i].getVariable() + "\t\t " + tablaDeErrores[i].getLinea() + "\t\t\t  " + tablaDeErrores[i].getComentario());
         }
     }
 
@@ -50,7 +50,7 @@ class AnalisisSemantico {
         } else if (tipo == 47 || tipo == 51) {
             TipoValor = "String";
         } else {
-            TipoValor = "No estipulado";
+            TipoValor = "Valor no idefinido";
         }
 
         //04 Historia de usuario : Validar las variables ya declaradas  
@@ -59,13 +59,11 @@ class AnalisisSemantico {
                 if (TipoValor.equals(tablaDeSimbolos[i].getTipo())) {
                     Validacion = true;
                     System.out.println("\u001B[31m------------------------------------------------------------------");
-                    System.out.println("\u001B[31m Error Semantico");
-                    System.out.println("\u001B[31m - La variable " + Nombre + " ya exite");
-                    System.out.println("\u001B[31m - Linea: " + tablaDeSimbolos[i].getposicion() + " ");
-                    System.out.println("\u001B[31m - Valor: " + tablaDeSimbolos[i].getValor() + " ");
+                    System.out.println("\u001B[31m Error "+(indiceTablaErrores+1)+": Error Semantico");
+                    System.out.println("\u001B[31m - La variable; " + Nombre + ", ya exite, en la linea: " + tablaDeSimbolos[i].getposicion()+"con el valor: " + tablaDeSimbolos[i].getValor());
                     System.out.println("\u001B[31m------------------------------------------------------------------");
 
-                    tablaDeErrores[indiceTablaErrores] = new TablaDeErrores("Semantico", Nombre, Linea, "La variable a sido declarada anteriormente");
+                    tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores+1,"Semantico", Nombre, Linea, "La variable a sido declarada anteriormente");
                     indiceTablaErrores++;
                     NoInsertar = 0;
                 }
@@ -103,14 +101,19 @@ class AnalisisSemantico {
         String Nombre = v1.image;
         String Valor = v2.image;
 
-        //System.out.println("Token 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
+        //en este if se verifica que la varibale tenga asignado un tipo de dato
+        // System.out.println("\033[32mToken 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
         if (v1.kind != 48 && v1.kind != 50) {
             try {
-//Si el TokenIzq.image existe dentro de la tabla de tokens, entonces tipoIdent1 toma el tipo de dato con el que TokenIzq.image fue declarado
+                //Si el TokenIzq.image existe dentro de la tabla de tokens, entonces tipoIdent1 toma el tipo de dato con el que TokenIzq.image fue declarado
                 tipoIdent1 = (Integer) tabla.get(v1.image);
             } catch (Exception e) {
-//Si TokenIzq.image no se encuentra en la tabla en la cual se agregan los tokens, el token no ha sido declarado, y se manda un error			
-                return "\t Ocurrio un error Semantico \n\t  -> El identificador = " + v1.image + " No ha sido declarado \n\t  -> Linea: " + v1.beginLine;
+
+                
+                //Si TokenIzq.image no se encuentra en la tabla en la cual se agregan los tokens, el token no ha sido declarado, y se manda un error	
+                tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores+1,"Sintatico", Nombre, v1.beginLine, "No se pudo crear la variable ya que falto estitular el tipo de dato al que pertenece");
+                indiceTablaErrores++;
+                return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError "+indiceTablaErrores+": Error Sintatico \n \u001B[31m- La variable: " + v1.image + " no ha sido declarado \n\u001B[31m------------------------------------------------------------------";
             }
         } else {
             tipoIdent1 = 0;
@@ -118,13 +121,12 @@ class AnalisisSemantico {
 
         //TokenAsig.kind != 48 && TokenAsig.kind != 50 && TokenAsig.kind != 51 && TokenAsig.kind != 52
         if (v2.kind == 49) {
-            /*Si el tipo de dato que se esta asignando, es algun identificador(kind == 49) 
-			se obtiene su tipo de la tabla de tokens para poder hacer las comparaciones*/
+            /*Si el tipo de dato que se esta asignando, es algun identificador(kind == 49) se obtiene su tipo de la tabla de tokens para poder hacer las comparaciones*/
             try {
                 tipoIdent2 = (Integer) tabla.get(v2.image);
             } catch (Exception e) {
                 //si el identificador no existe manda el error
-                return "\t Ocurrio un error Semantico \n\t  -> valor = " + v2.image + " No ha sido declarado correctamente \n\t  -> Linea: " + v1.beginLine;
+                return "\t dddOcurrio un error Semantico \n\t  -> valor = " + v2.image + " No ha sido declarado correctamente \n\t  -> Linea: " + v1.beginLine;
             }
         } //Si el dato es entero(48) o decimal(50) o caracter(51) o cadena(52)
         //tipoIdent2 = tipo_del_dato
@@ -137,25 +139,8 @@ class AnalisisSemantico {
 
         //Int
         if (tipoIdent1 == 44) {
-            int Ubicacion;
-            //System.out.println("Token 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
-            for (int i = 0; i < limiteDeTabla; i++) {
-                String Valor2 = Valor.substring(1, Valor.length() - 1);
-                if (Valor2.equals(tablaDeSimbolos[i].getNombre()) && "Int".equals(tablaDeSimbolos[i].getTipo())) {
-                    Ubicacion = i;
-
-                    for (int f = 0; f < limiteDeTabla; f++) {
-                        if (Nombre.equals(tablaDeSimbolos[f].getNombre())) {
-                            System.out.println("estoy dentro");
-                            String R = tablaDeSimbolos[i].getValor();
-                            tablaDeSimbolos[f].setValor(R);
-                        }
-                    }
-
-                }
-            }
-
-            boolean Validacion = false;
+            
+               boolean Validacion = false;
             if (intComp.contains(tipoIdent2)) {
                 if (NoInsertar == 1) {
                     for (int i = 0; i < limiteDeTabla; i++) {
@@ -165,10 +150,29 @@ class AnalisisSemantico {
                     }
                 }
 
+            //System.out.println("Token 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
+            for (int i = 0; i < limiteDeTabla; i++) {
+               
+                String Valor2 = Valor;   
+                if (Valor2.equals(tablaDeSimbolos[i].getNombre()) && "Int".equals(tablaDeSimbolos[i].getTipo())) {
+
+                    for (int f = 0; f < limiteDeTabla; f++) {
+                     
+                        if (Nombre.equals(tablaDeSimbolos[f].getNombre())) {
+                            tablaDeSimbolos[f].setValor(tablaDeSimbolos[i].getValor());                       
+                        }
+                    }
+                }
+            }
                 return " ";
+                
+          
             } else //Si el tipo de dato no es compatible manda el error
             {
-                return "\t Ocurrio un error Semantico \n\t  -> No se puede asignar el valor : " + v2.image + " a Entero \n\t  -> Linea: " + v1.beginLine;
+                tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores+1,"Semantico", Nombre, v1.beginLine, "No se puede aignar un valor String a una variable de tipo Int");
+                indiceTablaErrores++;
+                return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError "+(indiceTablaErrores)+": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: "+ v1.image  +" no puede tomar el valor "+Valor+"\n\u001B[31m------------------------------------------------------------------";
+                                  
             }
         } else if (tipoIdent1 == 45) //double
         {
