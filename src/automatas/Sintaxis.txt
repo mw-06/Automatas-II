@@ -3,19 +3,32 @@ package Automatas
 
 	public static void Main() 
 	{
+        string ss= 99;
+        string de =  "" 
+        
+        char n5 = 'M';
+	char n6 = 83;
+
+        dec decimal = 10.5;
+        decimal = 1;
+        decimal = "Norte";
+
         int numero; 
         numero = 100;
         int numer2 = numero;
+        numer2 = "numero";
         int Cars = "Jose";
 	Valor = "Declaracion";
+
+        
+        
 	int n1;
         int n1 = 10;
 	int n2 = "Valor"; 
 	n1 = 200;
-	dec n3 = 10.5;
+	
 	dec n4 = "d";
-	char n5 = 'M';
-	char n6 = 83;
+	
 	
 	string n7 = "buenos dias"; 
 	string n8 = 455; 
