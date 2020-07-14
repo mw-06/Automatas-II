@@ -60,7 +60,7 @@ class AnalisisSemantico {
                     Validacion = true;
                     System.out.println("\u001B[31m------------------------------------------------------------------");
                     System.out.println("\u001B[31m Error "+(indiceTablaErrores+1)+": Error Semantico");
-                    System.out.println("\u001B[31m - La variable; " + Nombre + ", ya exite, en la linea: " + tablaDeSimbolos[i].getposicion()+"con el valor: " + tablaDeSimbolos[i].getValor());
+                    System.out.println("\u001B[31m - La variable; " + Nombre + ", ya exite, en la linea: " + tablaDeSimbolos[i].getposicion()+" con el valor: " + tablaDeSimbolos[i].getValor());
                     System.out.println("\u001B[31m------------------------------------------------------------------");
 
                     tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores+1,"Semantico", Nombre, Linea, "La variable a sido declarada anteriormente");
@@ -139,8 +139,8 @@ class AnalisisSemantico {
 
         //Int
         if (tipoIdent1 == 44) {
-            
-               boolean Validacion = false;
+
+            boolean Validacion = false;
             if (intComp.contains(tipoIdent2)) {
                 if (NoInsertar == 1) {
                     for (int i = 0; i < limiteDeTabla; i++) {
@@ -150,29 +150,28 @@ class AnalisisSemantico {
                     }
                 }
 
-            //System.out.println("Token 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
-            for (int i = 0; i < limiteDeTabla; i++) {
-               
-                String Valor2 = Valor;   
-                if (Valor2.equals(tablaDeSimbolos[i].getNombre()) && "Int".equals(tablaDeSimbolos[i].getTipo())) {
+                //System.out.println("Token 1:"+v1.image+" , token 2: "+v2.image +", tipo: "+tipo);
+                for (int i = 0; i < limiteDeTabla; i++) {
 
-                    for (int f = 0; f < limiteDeTabla; f++) {
-                     
-                        if (Nombre.equals(tablaDeSimbolos[f].getNombre())) {
-                            tablaDeSimbolos[f].setValor(tablaDeSimbolos[i].getValor());                       
+                    String Valor2 = Valor;
+                    if (Valor2.equals(tablaDeSimbolos[i].getNombre()) && "Int".equals(tablaDeSimbolos[i].getTipo())) {
+
+                        for (int f = 0; f < limiteDeTabla; f++) {
+
+                            if (Nombre.equals(tablaDeSimbolos[f].getNombre())) {
+                                tablaDeSimbolos[f].setValor(tablaDeSimbolos[i].getValor());
+                            }
                         }
                     }
                 }
-            }
                 return " ";
-                
-          
+
             } else //Si el tipo de dato no es compatible manda el error
             {
-                tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores+1,"Semantico", Nombre, v1.beginLine, "No se puede aignar un valor String a una variable de tipo Int");
+                tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores + 1, "Semantico", Nombre, v1.beginLine, "No se puede aignar un valor de tipo cadena a una variable de tipo Int");
                 indiceTablaErrores++;
-                return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError "+(indiceTablaErrores)+": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: "+ v1.image  +" no puede tomar el valor "+Valor+"\n\u001B[31m------------------------------------------------------------------";
-                                  
+                return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError " + (indiceTablaErrores) + ": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: " + v1.image + " no puede tomar el valor " + Valor + "\n\u001B[31m------------------------------------------------------------------";
+
             }
         } else if (tipoIdent1 == 45) //double
         {
@@ -186,7 +185,13 @@ class AnalisisSemantico {
 
                 return " ";
             } else {
-                return "\t Ocurrio un error Semantico \n\t  -> No se puede asignar el valor : " + v2.image + " a double \n\t  -> Linea: " + v1.beginLine;
+               // return "\t Ocurrio un error Semantico \n\t  -> No se puede asignar el valor : " + v2.image + " a double \n\t  -> Linea: " + v1.beginLine;
+                
+               tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores + 1, "Semantico", Nombre, v1.beginLine, "No se puede aignar un valor de tipo cadena a una variable de tipo Int");
+               indiceTablaErrores++;
+               return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError " + (indiceTablaErrores) + ": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: " + v1.image + " no puede tomar el valor " + Valor + "\n\u001B[31m------------------------------------------------------------------";
+
+            
             }
         } else if (tipoIdent1 == 46) //char
         {
@@ -207,9 +212,11 @@ class AnalisisSemantico {
                 }
             } else //Si se esta asignando mas de un caracter manda el error 			
             {
-                return "\t Ocurrio un error Semantico \n\t  -> No se puede declarar mas de un caracter a un Char : " + v2.image + "  \n\t  -> Linea: " + v1.beginLine;
+               tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores + 1, "Semantico", Nombre, v1.beginLine, "Una variable de tipo char no puede tener mas un caracter o ser de tipo entero");
+               indiceTablaErrores++;
+               return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError " + (indiceTablaErrores) + ": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: " + v1.image + " es de tipo char, por lo que no puede contener mas de 1 caracter" +  "\n\u001B[31m------------------------------------------------------------------";
             }
-
+           
         } else if (tipoIdent1 == 47) //string
         {
             if (strComp.contains(tipoIdent2)) {
@@ -222,7 +229,10 @@ class AnalisisSemantico {
 
                 return " ";
             } else {
-                return "\t Ocurrio un error Semantico \n\t  -> No se puede Asignar el valor : " + v2.image + " a cadena  \n\t  -> Linea: " + v1.beginLine;
+               tablaDeErrores[indiceTablaErrores] = new TablaDeErrores(indiceTablaErrores + 1, "Semantico", Nombre, v1.beginLine, "Una variable de tipo cadena (String) no puede aceptar una varible entera (Int) u decimal");
+               indiceTablaErrores++;
+                return "\u001B[31m------------------------------------------------------------------\n \u001B[31mError " + (indiceTablaErrores) + ": Error Semantico \n \u001B[31m- Datos incompatibles, la varible: " + v1.image + " es de tipo cadena por lo que no puede aceptar una variable de tipo Int " +  "\n\u001B[31m------------------------------------------------------------------";
+             //   return "\t Ocurrio un error Semantico \n\t  -> No se puede Asignar el valor : " + v2.image + " a cadena  \n\t  -> Linea: " + v1.beginLine;
             }
         } else {
             return "El Identificador " + v1.image + " no ha sido declarado" + " Linea: " + v1.beginLine;
