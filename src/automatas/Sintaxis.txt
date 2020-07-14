@@ -1,0 +1,31 @@
+package Automatas 
+{
+
+	public static void Main() 
+	{
+	Valor = "Declaracion";
+	int n1;
+	int n2 = "Valor"; 
+	n1 = 200;
+	dec n3 = 10.5;
+	dec n4 = "d";
+	char n5 = 'M';
+	char n6 = 83;
+	
+	string n7 = "buenos dias"; 
+	string n8 = 455; 
+	if ( x == 58 ) 
+		{
+			 
+		}
+		int n9 =30;
+		n1 = 999;
+		int n1 = 400;
+		string n7 = "Jose";	
+		n7 = "jorge";
+		n6 = 'H';
+		int x = "n1"; 
+                string d = "lowell";
+		
+	}
+}
