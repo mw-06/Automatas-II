@@ -13,6 +13,9 @@ class Compilacion implements CompilacionConstants {
             System.out.println();
             System.out.println();
             AnalisisSemantico.TablaSimbolos();
+            
+            System.out.println();
+             AnalisisSemantico.TablaDeErrores();
 
             System.out.println();
             System.out.println("\u005ctAnalizador ha terminado.");
