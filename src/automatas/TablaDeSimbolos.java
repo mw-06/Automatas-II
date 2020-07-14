@@ -10,27 +10,27 @@ package automatas;
  */
 public class TablaDeSimbolos {
     
-       // String rol;
+        String rol;
 	String nombre;
 	String tipo;
 	String valor;
 	int posicion;
 	
 	
-	public TablaDeSimbolos(/*String rol,*/ String nombre, String tipo, String valor, int posicion) {
+	public TablaDeSimbolos(String rol, String nombre, String tipo, String valor, int posicion) {
 		super();
-             //   this.rol = rol;
+                this.rol = rol;
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.valor = valor;	
 		this.posicion = posicion;
 	}
-//        public String getrol() {
-//		return rol;
-//	}
-//	public void setrol(String rol) {
-//		this.rol = rol;
-//	}
+        public String getrol() {
+		return rol;
+	}
+	public void setrol(String rol) {
+		this.rol = rol;
+	}
            
 	public String getNombre() {
 		return nombre;
